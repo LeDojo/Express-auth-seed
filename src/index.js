@@ -15,5 +15,6 @@ const port = 4567;
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
 app.use("/users", userRouter);
 app.listen(port, () => console.log(`Server is listening on port : ${port}`));

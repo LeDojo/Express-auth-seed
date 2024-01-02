@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const jwt = require("jsonwebtoken");
 
 const store = async (req, res) => {
   try {
@@ -6,7 +7,8 @@ const store = async (req, res) => {
     user.email = req.body.email;
     user.password = await user.encryptPassword(req.body.password);
     user.save();
-    res.json(user);
+    const token = jwt.sign({id:user.id}, "simplon-secret", {expiresIn: "1d"});
+    res.json({user,token});
   } catch (error) {
     console.error(error.message);
   }
@@ -31,6 +33,7 @@ const login = async (req, res) => {
       const error = new Error("Invalid password");
       throw error;
     }
+    const token = jwt.sign({id:user.id}, "simplon-secret", {expiresIn: "1d"});
     res.json({ user, message: "Vous êtes connécté" });
   } catch (error) {
     console.error(error.message);
