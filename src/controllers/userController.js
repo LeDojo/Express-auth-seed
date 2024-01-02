@@ -1,10 +1,12 @@
+const User = require("../models/userModel");
+
 const store = async (req, res) => {
   try {
-    const user = await {
-      email: "test@hotmail.fr",
-      password: "azerty",
-    };
-    res.send(user);
+    const user = new User();
+    user.email = req.body.email;
+    user.password = await user.encryptPassword(req.body.password);
+    user.save();
+    res.json(user);
   } catch (error) {
     console.error(error.message);
   }
